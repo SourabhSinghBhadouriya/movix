@@ -18,18 +18,21 @@ const SearchResult = () => {
 
     const fetchInitialData = () => {
         setLoading(true);
-        fetchDataFromApi(`/search/multi?query=${query}&page=${pageNum}`).then(
-            (res) => {
+        fetchDataFromApi(`/search/multi?query=${query}&page=${pageNum}`)
+            .then((res) => {
                 setData(res);
                 setPageNum((prev) => prev + 1);
                 setLoading(false);
-            }
-        );
+            })
+            .catch((error) => {
+                console.error("Error fetching data:", error);
+                setLoading(false);
+            });
     };
 
     const fetchNextPageData = () => {
-        fetchDataFromApi(`/search/multi?query=${query}&page=${pageNum}`).then(
-            (res) => {
+        fetchDataFromApi(`/search/multi?query=${query}&page=${pageNum}`)
+            .then((res) => {
                 if (data?.results) {
                     setData({
                         ...data,
@@ -39,8 +42,10 @@ const SearchResult = () => {
                     setData(res);
                 }
                 setPageNum((prev) => prev + 1);
-            }
-        );
+            })
+            .catch((error) => {
+                console.error("Error fetching data:", error);
+            });
     };
 
     useEffect(() => {

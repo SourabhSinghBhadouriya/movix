@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import { fetchDataFromApi } from "../utils/api";
+
 const useFetch = (url) => {
     const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(null);
+    const [loading, setLoading] = useState(true); // Initialize as true since we are starting to load
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        setLoading("loading...");
+        if (!url) return; // Prevent running the effect if the URL is empty or undefined
+
+        setLoading(true); // Set loading to true when the effect runs
         setData(null);
         setError(null);
 
@@ -17,7 +20,7 @@ const useFetch = (url) => {
             })
             .catch((err) => {
                 setLoading(false);
-                setError("Something went wrong!");
+                setError(err.message || "Something went wrong!");
             });
     }, [url]);
 
